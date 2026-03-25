@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+      deployment_id:
+        description: 'OpenDev deployment ID'
+        required: true
+      branch:
+        description: 'Branch to deploy'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Deploy to ${{ github.event.inputs.environment }}
+        run: |
+          echo "Deploying branch ${{ github.event.inputs.branch }} to ${{ github.event.inputs.environment }}"
+          echo "Deployment ID: ${{ github.event.inputs.deployment_id }}"
+          echo "Deploy complete"
